@@ -1,0 +1,20 @@
+version: "3.9"  # optional since v1.27.0
+services:
+  pgsqldb:
+    image: postgres:10.9
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: passw0rd
+      POSTGRES_DB: ledzeppelinrollingstones
+      LED_POSTGRES_USER: ledzep
+      LED_POSTGRES_PASSWORD: zepled
+      LED_POSTGRES_SCHEMA: ledzeppelin
+      ROLL_POSTGRES_USER: rollings
+      ROLL_POSTGRES_PASSWORD: srolling
+      ROLL_POSTGRES_SCHEMA: rollingstones
+    volumes:
+      - ./main-init/00-init-db.sh:/docker-entrypoint-initdb.d/00-init-db.sh
+      - ./ledzeppelin/01-init-tables-lz.sql:/docker-entrypoint-initdb.d/01-init-tables-lz.sql
+      - ./rollingstones/01-init-tables-rs.sql:/docker-entrypoint-initdb.d/01-init-tables-rs.sql
+    ports:
+      - "3609:5432"
